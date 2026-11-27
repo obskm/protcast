@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProtCast Comment Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: friendly classroom game, clear and calm, English for class 8
+   IDEA: a social media feed on a phone, the ProtCast app
+   PICTURE: the phone itself, centred, with posts to tap
+   COLOUR and TYPE: navy #1F2A44, pale blue #D3DEEE like the worksheets, O blue, R orange, E green; Outfit
+   LAYOUT: short title, phone below or beside on wide screens */
+:root{color-scheme:light dark;--bg:light-dark(#eef2f8,#10151f);--ink:light-dark(#1F2A44,#e8edf6);--muted:light-dark(#4f5b70,#a9b4c7)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Outfit,Arial,sans-serif;overflow-x:clip}
+.wrap{max-width:1000px;margin:0 auto;padding:clamp(20px,4vw,48px) 16px;display:flex;gap:40px;align-items:center;justify-content:center;flex-wrap:wrap}
+.intro{flex:1 1 300px;max-width:400px}
+.intro h1{font-size:clamp(32px,5vw,46px);line-height:1.05;margin:0 0 12px;text-wrap:balance}
+.intro p{margin:0 0 12px;color:var(--muted)}
+.key{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tag{font-weight:600;font-size:14px;padding:4px 12px;border-radius:999px}
+.tO{background:#d8e6fb;color:#0c447c}.tR{background:#fde3c8;color:#7a3d06}.tE{background:#d6f0dc;color:#1d5b2b}
+.phone{flex:0 0 auto;width:min(390px,100%);height:780px;background:#11161f;border-radius:48px;padding:12px;box-shadow:0 24px 60px rgba(17,22,31,.35),inset 0 0 0 2px #2b3342}
+.screen{height:100%;background:#fff;color:#1F2A44;border-radius:38px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.status{display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:14px;font-weight:600}
+.notch{width:110px;height:28px;background:#11161f;border-radius:20px;position:absolute;top:10px;left:50%;transform:translateX(-50%)}
+.appbar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #e3e8f0}
+.logo{width:34px;height:34px;border-radius:50%;background:#1F2A44;display:grid;place-items:center}
+.appname{font-weight:700;font-size:20px;background:#D3DEEE;padding:0 10px;border-radius:8px}
+.score{margin-left:auto;display:flex;align-items:center;gap:6px;font-weight:700;background:#fdecee;color:#a3122a;padding:4px 12px;border-radius:999px;font-size:15px}
+.score.pop{animation:pop .4s}
+@keyframes pop{50%{transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.score.pop{animation:none}}
+.feed{flex:1;overflow-y:auto;padding:12px 12px 4px;display:flex;flex-direction:column;gap:12px;background:#f5f7fb}
+.round{font-size:13px;color:#4f5b70;text-align:center;font-weight:600}
+.post{background:#fff;border:1.5px solid #dfe5ee;border-radius:16px;padding:12px 14px;cursor:default;text-align:left;font:inherit;color:inherit;width:100%}
+button.post{cursor:pointer}
+button.post:hover{border-color:#8ea3c4}
+.post:focus-visible,.btn:focus-visible,.lab:focus-visible,.seg:focus-visible{outline:3px solid #2D73B5;outline-offset:2px}
+.post.good{border-color:#2e9e57;box-shadow:0 0 0 2px #2e9e57}
+.post.bad{border-color:#d64545;box-shadow:0 0 0 2px #d64545}
+.who{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff}
+.handle{font-weight:600;font-size:14px}
+.time{font-size:12px;color:#6b7588}
+.text{font-size:16px;line-height:1.45}
+.meta{display:flex;gap:16px;font-size:13px;color:#6b7588;margin-top:8px}
+.seg{display:inline;font:inherit;color:inherit;background:transparent;border:1.5px solid transparent;border-radius:8px;padding:1px 4px;cursor:pointer;line-height:1.9;text-align:left}
+.seg.O{background:#d8e6fb;border:1.5px solid #378add}.seg.R{background:#fde3c8;border:1.5px solid #d9822b}.seg.E{background:#d6f0dc;border:1.5px solid #2e9e57}
+.seg:hover{background:#eef2f8;border-color:#c9d2e0}.seg.miss{border:1.5px dashed #2e9e57}
+.seg .mk{font-weight:700;font-size:12px;margin-left:4px;padding:0 5px;border-radius:5px;background:#1F2A44;color:#fff}
+.seg.right .mk{background:#2e9e57}.seg.wrong .mk{background:#d64545}
+.panel{border-top:1px solid #e3e8f0;padding:12px 14px 18px;background:#fff}
+.task{font-weight:600;margin:0 0 8px;font-size:15px}
+.hint{font-size:14px;color:#4f5b70;margin:0 0 8px}
+.err{font-size:13px;color:#c0262d;margin:6px 0 0;min-height:18px}
+.labs{display:flex;gap:8px;margin-bottom:10px}
+.lab{flex:1;min-height:44px;border-radius:12px;border:2px solid transparent;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.lab.O{background:#d8e6fb;color:#0c447c}.lab.R{background:#fde3c8;color:#7a3d06}.lab.E{background:#d6f0dc;color:#1d5b2b}
+.lab.on{border-color:#1F2A44;box-shadow:0 0 0 2px #fff inset}
+.btn{width:100%;min-height:46px;border:0;border-radius:14px;background:#1F2A44;color:#fff;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+.btn:hover{background:#2c3b5c}
+.center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:12px;background:#f5f7fb}
+.big{font-size:30px;font-weight:700;line-height:1.1}
+.badge{font-weight:700;background:#FAEEDA;color:#633806;padding:6px 14px;border-radius:999px}
+.sample{font-size:13px;color:var(--muted);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="intro">
+<h1>Comment Coach training</h1>
+<p>Scroll through the ProtCast feed about online protests. In every round you see two posts.</p>
+<p>First tap the convincing post. Then find its signal words: which words show the opinion, the reason and the example? Collect hearts!</p>
+<div class="key"><span class="tag tO">O = Opinion</span><span class="tag tR">R = Reason</span><span class="tag tE">E = Example</span></div>
+<p class="sample">All posts and usernames are made up for this game.</p>
+</div>
+
+<div class="phone" aria-label="ProtCast game on a phone screen">
+<div class="screen">
+<div class="notch" aria-hidden="true"></div>
+<div class="status"><span>8:20</span><span aria-hidden="true">5G ▮▮▮</span></div>
+<div class="appbar">
+<span class="logo" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></svg></span>
+<span class="appname">ProtCast</span>
+<span class="score" id="score" aria-live="polite"><svg width="16" height="16" viewBox="0 0 24 24" fill="#e5484d" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.4.7-1.2 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg><span id="pts">0</span></span>
+</div>
+<div id="main" style="flex:1;display:flex;flex-direction:column;min-height:0"></div>
+</div>
+</div>
+</div>
+
+<script>
+{
+const ROUNDS=[
+ {weak:{u:"dan_xo",c:"#8a63d2",t:"Hashtags are stupid."},
+  strong:{u:"kiki.k",c:"#d4537e",s:[["In my opinion,","O"],"online protests can really help.",["One reason is","R"],"that one post can reach millions of people in a few hours.",["For example,","E"],"the #BlackLivesMatter videos made people all over the world talk about racism."]}},
+ {weak:{u:"coolkid08",c:"#1d9e75",t:"Likes don’t help. Period."},
+  strong:{u:"noah_says",c:"#378add",s:[["I think","O"],"online protests are not enough on their own. A like is easy to click, but it doesn’t change any laws",["because","R"],"politicians need to see real people.",["For example,","E"],"lots of people like posts about climate change, but only a few go to real protests."]}},
+ {weak:{u:"sunny_lily",c:"#d9822b",t:"Online protests are cool!!!"},
+  strong:{u:"zoe.writes",c:"#534ab7",s:[["I saw a video about","E"],"a girl who started an online petition for a skate park, and her town really built one.",["In my opinion,","O"],"online protests can make a difference.",["One reason is","R"],"that politicians notice when many people care about a topic."]}},
+ {weak:{u:"realtalk_jay",c:"#5f5e5a",t:"Social media is fake anyway."},
+  strong:{u:"sam_thinks",c:"#0f6e56",s:[["I think","O"],"we have to be careful with online protests.",["One reason is","R"],"that fake news spreads very fast.",["For example,","E"],"people sometimes share old protest photos and say they are new."]}},
+ {weak:{u:"gamer_tom",c:"#993c1d",t:"Who cares?"},
+  strong:{u:"jordan.voice",c:"#185fa5",s:["Many people can’t go to a protest on the street",["because","R"],"they live too far away.",["I also think","O"],"that online protests are important for them.",["For example,","E"],"people from small villages can still support #EndRacialProfiling online."]}}
+];
+function chunks(p){const out=[];p.s.forEach(x=>{if(Array.isArray(x)){out.push({t:x[0],m:x[1]})}else{const w=x.split(' ');for(let i=0;i<w.length;i+=3)out.push({t:w.slice(i,i+3).join(' '),m:null})}});return out}
+const MAX=ROUNDS.length*4;
+let CH=[];
+const main=document.getElementById('main'),ptsEl=document.getElementById('pts'),scoreEl=document.getElementById('score');
+let r=0,pts=0,step=0,order=[],labels=[],pick='O';
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const heart='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.4.7-1.2 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>';
+function add(n){if(!n)return;pts+=n;ptsEl.textContent=pts;scoreEl.classList.remove('pop');void scoreEl.offsetWidth;scoreEl.classList.add('pop')}
+function who(u,c,t){return `<div class="who"><span class="av" style="background:${c}" aria-hidden="true">${esc(u[0].toUpperCase())}</span><span class="handle">@${esc(u)}</span><span class="time">· ${t}</span></div>`}
+function start(){
+ main.innerHTML=`<div class="center"><span class="badge">Comment Coach training</span><div class="big">Find the convincing posts!</div><p class="hint">5 rounds · up to ${MAX} hearts</p><p class="hint">1. Tap the convincing post.<br>2. Find the signal words for O, R and E.</p><button class="btn" id="go" style="max-width:240px">Start</button></div>`;
+ document.getElementById('go').onclick=()=>{r=0;pts=0;ptsEl.textContent=0;round()};
+}
+function postHTML(kind,i){
+ const R=ROUNDS[r];
+ if(kind==='weak'){const p=R.weak;return `${who(p.u,p.c,(i+2)+' min')}<div class="text">${esc(p.t)}</div><div class="meta"><span>${heart} ${12+r*7}</span><span>3 comments</span></div>`}
+ const p=R.strong;
+ const body=step<2?CH.map(x=>esc(x.t)).join(' '):CH.map((x,j)=>{const l=labels[j];let cls=l||'';let mk=l?`<span class="mk">${l}</span>`:'';if(step===3){if(l){cls+=l===x.m?' right':' wrong';mk=`<span class="mk">${l===x.m?l+' ✓':l+' ✗'}</span>`}if(x.m&&l!==x.m){cls+=' miss';mk+=`<span class="mk" style="background:#2e9e57">${x.m}</span>`}}return `<button class="seg ${cls}" data-j="${j}" ${step===3?'disabled':''}>${esc(x.t)}${mk}</button>`}).join(' ');
+ return `${who(p.u,p.c,(i+2)+' min')}<div class="text">${body}</div><div class="meta"><span>${heart} ${140+r*33}</span><span>18 comments</span></div>`;
+}
+function round(){step=0;CH=chunks(ROUNDS[r].strong);labels=CH.map(()=>null);pick='O';order=Math.random()<.5?['weak','strong']:['strong','weak'];render()}
+function render(msg){
+ const posts=order.map((k,i)=>{
+  if(step===0)return `<button class="post" data-k="${k}">${postHTML(k,i)}</button>`;
+  const cls=step===1&&k==='strong'?'good':(step===1&&k===msg?'bad':'');
+  if(step>=2&&k==='weak')return '';
+  return `<div class="post ${k==='strong'&&step>=2?'':cls}">${postHTML(k,i)}</div>`;
+ }).join('');
+ let panel='';
+ if(step===0)panel=`<p class="task">Which post is convincing? Tap it.</p>`;
+ if(step===1)panel=`<p class="task">${msg==='strong'?'Yes! This post gives reasons. +1':'Not quite. The other post is more convincing.'}</p><p class="hint">The short post only shows an opinion. There is no reason and no example.</p><button class="btn" id="next">Find the markers</button>`;
+ if(step===2)panel=`<p class="task">Find the signal words! Choose a letter, then tap the marker in the post.</p><div class="labs">${['O','R','E'].map(l=>`<button class="lab ${l} ${pick===l?'on':''}" data-l="${l}" aria-pressed="${pick===l}">${l} · ${{O:'Opinion',R:'Reason',E:'Example'}[l]}</button>`).join('')}</div><button class="btn" id="check">Check</button><p class="err" id="err" aria-live="polite"></p>`;
+ if(step===3){const ok=CH.filter((x,j)=>x.m&&labels[j]===x.m).length;panel=`<p class="task">${ok===3?'Perfect! +3':ok+' of 3 correct. +'+ok}</p><button class="btn" id="next">${r<ROUNDS.length-1?'Next post':'See my result'}</button>`}
+ main.innerHTML=`<div class="feed"><div class="round">Round ${r+1} of ${ROUNDS.length}</div>${posts}</div><div class="panel">${panel}</div>`;
+ main.querySelectorAll('button.post').forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==='strong')add(1);step=1;render(k)});
+ main.querySelectorAll('.lab').forEach(b=>b.onclick=()=>{pick=b.dataset.l;render()});
+ main.querySelectorAll('.seg').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;labels=labels.map(x=>x===pick?null:x);labels[j]=pick;const nx=['O','R','E'].find(l=>!labels.includes(l));if(nx)pick=nx;render()});
+ const nb=document.getElementById('next');
+ if(nb)nb.onclick=()=>{if(step===1){step=2;render()}else{if(r<ROUNDS.length-1){r++;round()}else end()}};
+ const cb=document.getElementById('check');
+ if(cb)cb.onclick=()=>{if(['O','R','E'].some(l=>!labels.includes(l))){document.getElementById('err').textContent='Find a marker for O, R and E first.';return}add(CH.filter((x,j)=>x.m&&labels[j]===x.m).length);step=3;render()};
+}
+function end(){
+ const lvl=pts>=18?'Comment Coach Pro':pts>=12?'Comment Coach':'Comment Coach in training';
+ main.innerHTML=`<div class="center"><span class="badge">${lvl}</span><div class="big">${pts} of ${MAX} hearts</div><p class="hint">Now you know the signal words for an opinion, a reason and an example.</p><p class="hint">Use them in your own comment and when you check your partner’s comment!</p><button class="btn" id="again" style="max-width:240px">Play again</button></div>`;
+ document.getElementById('again').onclick=()=>{r=0;pts=0;ptsEl.textContent=0;round()};
+}
+start();
+}
+</script>
+</body>
+</html>
